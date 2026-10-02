@@ -1,0 +1,8 @@
+pandas
+numpy
+dask[dataframe]
+scikit-learn
+sqlalchemy
+requests
+flask
+mlflow
