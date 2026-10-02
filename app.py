@@ -3,6 +3,9 @@ import pickle
 import pandas as pd
 import logging
 from pathlib import Path
+from flask import Response, g
+from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
+import time
 
 app = Flask(__name__)
 
@@ -28,6 +31,50 @@ FEATURES = [
     "high_support_usage"
 ]
 
+
+
+# Prometheus monitoring metrics
+REQUEST_COUNT = Counter(
+    "flask_http_requests_total",
+    "Total HTTP requests",
+    ["method", "endpoint", "http_status"]
+)
+
+REQUEST_LATENCY = Histogram(
+    "flask_http_request_duration_seconds",
+    "HTTP request latency in seconds",
+    ["endpoint"]
+)
+
+PREDICTION_COUNT = Counter(
+    "model_predictions_total",
+    "Total model predictions",
+    ["prediction"]
+)
+
+@app.before_request
+def start_request_timer():
+    g.start_time = time.time()
+
+@app.after_request
+def record_request_metrics(response):
+    endpoint = request.path
+    REQUEST_COUNT.labels(
+        method=request.method,
+        endpoint=endpoint,
+        http_status=response.status_code
+    ).inc()
+
+    if hasattr(g, "start_time"):
+        REQUEST_LATENCY.labels(endpoint=endpoint).observe(
+            time.time() - g.start_time
+        )
+
+    return response
+
+@app.route("/metrics", methods=["GET"])
+def metrics():
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 
 @app.route("/", methods=["GET"])
 def home():
@@ -76,6 +123,7 @@ def predict():
             result
         )
 
+        PREDICTION_COUNT.labels(prediction=result["prediction_label"]).inc()
         return jsonify(result)
 
     except Exception as error:
@@ -94,7 +142,7 @@ if __name__ == "__main__":
     print("Health endpoint: http://127.0.0.1:5001/health")
 
     app.run(
-        host="127.0.0.1",
-        port=5001,
+        host="0.0.0.0",
+        port=5000,
         debug=False
     )

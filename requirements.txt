@@ -6,3 +6,4 @@ sqlalchemy
 requests
 flask
 mlflow
+prometheus-client
