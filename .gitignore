@@ -1,0 +1,40 @@
+# Python virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+
+# Environment/secrets
+.env
+
+# Airflow local files
+airflow/airflow.db
+airflow/logs/
+airflow/*.pid
+
+# MLflow local tracking data
+mlruns/
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/
+mlflow.db
+
+# Airflow generated configuration/database
+airflow/airflow.cfg
+airflow/airflow.db
+
+# Generated ETL outputs
+data/processed/
+data/*.db
+
+# Trained model artifacts
+models/*.pkl
