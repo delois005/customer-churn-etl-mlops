@@ -84,7 +84,7 @@ Grafana dashboards display:
 
 ## CI/CD
 
-GitHub Actions automates:
+Docker image build and deployment testing
 
 - Code validation
 - Dependency installation
