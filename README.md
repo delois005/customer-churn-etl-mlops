@@ -19,6 +19,20 @@ This project demonstrates the design and implementation of an end-to-end ETL and
 - Prometheus
 - Grafana
 - GitHub Actions
+- Apache Airflow
+  
+## Workflow Orchestration
+
+Apache Airflow is used to coordinate the ETL and machine learning workflow.
+
+The Airflow DAG controls the execution order of:
+
+1. Data extraction
+2. Data transformation
+3. Data loading
+4. Model training
+
+This creates a repeatable workflow and reduces the need to run individual pipeline stages manually.
 
 ---
 
@@ -26,7 +40,13 @@ This project demonstrates the design and implementation of an end-to-end ETL and
 
 ### Extract
 
-Data is extracted from structured customer datasets and prepared for processing.
+The extraction phase retrieves data from multiple sources, including:
+
+- CSV files containing structured customer data
+- Relational database records using SQLAlchemy
+- Web API data using Python Requests
+
+The API response also includes free-text fields such as `title` and `body`, providing an example of semi-structured data containing unstructured textual content.
 
 ### Transform
 
@@ -90,6 +110,7 @@ Docker image build and deployment testing
 - Dependency installation
 - Pipeline execution
 - Model deployment
+- Docker image build and deployment testing
 
 ---
 ---
@@ -106,9 +127,15 @@ customer-churn-mlops/
 ├── Dockerfile
 ├── prometheus.yml
 ├── README.md
+│
+├── airflow/
+│   └── dags/
+│       └── etl_mlops_dag.py
+│
 ├── .github/
 │   └── workflows/
 │       └── ci.yml
+│
 ├── models/
 └── data/
 ```
