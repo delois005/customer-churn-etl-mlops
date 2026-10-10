@@ -1,0 +1,21 @@
+customer_id,age,monthly_spend,tenure_months,support_calls,contract_type,churn,predicted_churn,churn_probability,risk_category,data_split
+1,25.0,45.5,6,3,Monthly,1,1,0.98,High Risk,Training
+2,42.0,89.2,36,1,Annual,0,0,0.0,Low Risk,Training
+3,35.0,67.8,18,2,Monthly,0,0,0.2,Low Risk,Training
+4,51.0,120.4,60,0,Annual,0,0,0.0,Low Risk,Training
+5,29.0,55.0,8,4,Monthly,1,1,1.0,High Risk,Training
+6,46.0,95.3,48,1,Annual,0,0,0.0,Low Risk,Testing
+7,31.0,68.6,12,5,Monthly,1,1,0.74,High Risk,Testing
+8,38.0,74.6,24,2,Annual,0,0,0.08,Low Risk,Testing
+9,27.0,49.9,5,6,Monthly,1,1,1.0,High Risk,Training
+10,55.0,130.2,72,0,Annual,0,0,0.0,Low Risk,Training
+11,33.0,62.4,15,3,Monthly,1,1,0.7,Medium Risk,Training
+12,44.0,88.7,40,1,Annual,0,0,0.0,Low Risk,Testing
+13,36.0,52.3,7,4,Monthly,1,1,0.94,High Risk,Training
+14,39.0,79.5,30,2,Annual,0,0,0.04,Low Risk,Testing
+15,26.0,43.8,4,5,Monthly,1,1,1.0,High Risk,Training
+16,48.0,102.6,54,1,Annual,0,0,0.0,Low Risk,Training
+17,36.0,69.4,20,3,Monthly,0,0,0.3,Low Risk,Training
+18,52.0,115.8,65,0,Annual,0,0,0.0,Low Risk,Training
+19,30.0,58.9,10,4,Monthly,1,1,1.0,High Risk,Testing
+20,41.0,84.3,34,1,Annual,0,0,0.02,Low Risk,Training

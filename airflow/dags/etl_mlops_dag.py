@@ -35,5 +35,12 @@ with DAG(
         task_id="train_model",
         bash_command=f'cd "{PROJECT_ROOT}" && "{PYTHON}" src/train_model.py',
     )
+    predict = BashOperator(
+        task_id="generate_tableau_predictions",
+        bash_command=(
+            f'cd "{PROJECT_ROOT}" && '
+            f'"{PYTHON}" src/week8_predictive_model.py'
+        ),
+    )
+    extract >> transform >> load >> train >> predict
 
-    extract >> transform >> load >> train

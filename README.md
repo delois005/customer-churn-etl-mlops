@@ -226,12 +226,16 @@ customer-churn-etl-mlops/
 ├── data/
 │   └── raw/
 │       └── customer_data.csv
+├── processed/
+└── tableau/
+    └── customer_churn_predictions.csv
 ├── src/
 │   ├── extract.py
 │   ├── transform.py
 │   ├── load.py
 │   ├── train_model.py
 │   └── tune_model.py
+│   └── week8_predictive_model.py
 ├── app.py
 ├── Dockerfile
 ├── prometheus.yml
@@ -296,6 +300,95 @@ Grafana:
 ```text
 http://localhost:3000
 ```
+## Week 8 Signature Assignment: ETL-Integrated Predictive Analytics and Tableau Dashboard
+
+### Project Overview
+
+This extension integrates customer churn predictive modeling with the existing ETL/MLOps architecture and an interactive Tableau Public dashboard. The project demonstrates data extraction, preprocessing, predictive modeling, workflow orchestration, and visualization of customer churn risk.
+
+### Predictive Model Development
+
+A Random Forest classifier was developed using Scikit-learn. Numerical variables were processed using median imputation and standard scaling, while categorical variables were processed using imputation and one-hot encoding.
+
+The dataset contained 20 customer records. A stratified 70/30 split produced 14 training observations and six testing observations.
+
+### Hyperparameter Optimization
+
+GridSearchCV evaluated 18 Random Forest configurations using three-fold stratified cross-validation.
+
+The optimal hyperparameters were:
+
+- Number of trees: 50
+- Maximum tree depth: 3
+- Minimum samples per leaf: 1
+
+The best cross-validation F1 score was 0.9333 (93.33%).
+
+### Model Evaluation
+
+The optimized model achieved the following results on six test observations:
+
+| Metric | Result |
+|---|---|
+| Accuracy | 100% |
+| Precision | 100% |
+| Recall | 100% |
+| F1 Score | 100% |
+| ROC-AUC | 1.0000 |
+
+The confusion matrix was `[[4, 0], [0, 2]]`.
+
+These results demonstrate successful classification on the small test sample. They should not be interpreted as evidence of reliable performance on larger, unseen customer populations.
+
+### Tableau Integration
+
+The predictive modeling script exports customer-level predictions to:
+
+`data/tableau/customer_churn_predictions.csv`
+
+The exported dataset contains 20 customer records, 11 columns, zero missing values, and zero duplicate customer IDs.
+
+The Tableau Public dashboard includes:
+
+1. Churn Rate by Contract Type
+2. Customer Risk Distribution
+3. Average Churn Probability by Contract Type
+
+An interactive Contract Type filter supports analysis of annual and monthly customers.
+
+The dashboard is published under the title **Week 8 - Customer Churn Predictive Analytics Dashboard**.
+
+### Airflow Automation
+
+Apache Airflow orchestrates five sequential tasks:
+
+`extract_data → transform_data → load_data → train_model → generate_tableau_predictions`
+
+A local Airflow DAG test completed successfully, confirming end-to-end task execution and generation of the Tableau-compatible prediction file.
+
+The DAG includes a daily schedule, although continuous scheduled operation has not been independently verified. Tableau Public refreshes are not automatically triggered by local CSV regeneration.
+
+### Running the Week 8 Predictive Model
+
+From the project root, execute:
+
+```bash
+./venv/bin/python src/week8_predictive_model.py
+```
+
+To test the complete Airflow workflow:
+
+```bash
+AIRFLOW__CORE__DAGS_FOLDER="$PWD/airflow/dags" ./venv/bin/airflow dags test customer_churn_etl_mlops_pipeline
+```
+
+### Optimization and Limitations
+
+The workflow uses stratified cross-validation, parallel hyperparameter search, reusable preprocessing pipelines, and Apache Airflow orchestration.
+
+The demonstration dataset contains only 20 records. Additional evaluation on larger datasets is necessary to assess generalization, runtime efficiency, and scalability.
+
+The current implementation generates Tableau-ready CSV files locally; updating the published Tableau Public dashboard requires a separate data-source update and publication step.
 
 ## Future Improvements
 
